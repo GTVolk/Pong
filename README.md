@@ -10,6 +10,8 @@ This is Pong game prototype written on pure C# / WinForms
 ## Installation:
 Build, run and enjoy!
 
+![Screenshot](/Screenshot.PNG?raw=true)
+
 ## TODO:
 1. ~~Core game and classes~~
 2. ~~Moving paddles~~
