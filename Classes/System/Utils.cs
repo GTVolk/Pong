@@ -38,7 +38,9 @@ namespace Pong.Classes
         /// </summary>
         /// <param name="coordinate"></param>
         /// <returns>Integer pixel</returns>
-        public int GetPixel(double coordinate)
+        public int GetPixel(
+            double coordinate = 0
+        )
         {
             return (int)Math.Round(coordinate);
         }
@@ -51,7 +53,12 @@ namespace Pong.Classes
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <returns>Rectangle object</returns>
-        public Rectangle GetRectangle(double x, double y, double width, double height)
+        public Rectangle GetRectangle(
+            double x = 0,
+            double y = 0,
+            double width = 0,
+            double height = 0
+        )
         {
             return new Rectangle(this.GetPixel(x), this.GetPixel(y), this.GetPixel(width), this.GetPixel(height));
         }
@@ -65,7 +72,14 @@ namespace Pong.Classes
         /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void DrawLine(Graphics graphics, Pen pen, double x, double y, double width, double height)
+        public void DrawLine(
+            Graphics graphics,
+            Pen pen = default,
+            double x = 0,
+            double y = 0,
+            double width = 0,
+            double height = 0
+        )
         {
             graphics.DrawLine(pen, this.GetPixel(x), this.GetPixel(y), this.GetPixel(width), this.GetPixel(height));
         }
@@ -79,7 +93,14 @@ namespace Pong.Classes
         /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void FillRectangle(Graphics graphics, Brush brush, double x, double y, double width, double height)
+        public void FillRectangle(
+            Graphics graphics,
+            Brush brush = default,
+            double x = 0,
+            double y = 0,
+            double width = 0,
+            double height = 0
+        )
         {
             graphics.FillRectangle(brush, this.GetRectangle(x, y, width, height));
         }
@@ -93,7 +114,14 @@ namespace Pong.Classes
         /// <param name="y"></param>
         /// <param name="width"></param>
         /// <param name="height"></param>
-        public void FillEllipse(Graphics graphics, Brush brush, double x, double y, double width, double height)
+        public void FillEllipse(
+            Graphics graphics,
+            Brush brush = default,
+            double x = 0,
+            double y = 0,
+            double width = 0,
+            double height = 0
+        )
         {
             graphics.FillEllipse(brush, this.GetRectangle(x, y, width, height));
         }
@@ -107,7 +135,14 @@ namespace Pong.Classes
         /// <param name="brush"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void DrawString(Graphics graphics, string text, Font font, Brush brush, double x, double y)
+        public void DrawString(
+            Graphics graphics,
+            string text = "",
+            Font font = default,
+            Brush brush = default,
+            double x = 0,
+            double y = 0
+        )
         {
             graphics.DrawString(text, font, brush, this.GetPixel(x), this.GetPixel(y));
         }

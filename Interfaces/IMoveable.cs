@@ -2,6 +2,8 @@
 {
     interface IMoveable: IObject
     {
-        void Move(IPoint vector);
+        IPoint Vector { get; set; }
+        double Speed { get; set; }
+        void Move();
     }
 }

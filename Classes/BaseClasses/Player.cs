@@ -11,12 +11,15 @@ namespace Pong.Classes
         /// Player controlled paddle
         /// </summary>
         public IPaddle Paddle { get; set; }
+        public int Score { get; set; }
 
         /// <summary>
         /// Protected class constructor for player
         /// </summary>
         /// <param name="paddle">Player paddle</param>
-        protected Player(IPaddle paddle)
+        protected Player(
+            IPaddle paddle
+        )
         {
             this.Paddle = paddle;
         }

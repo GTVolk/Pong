@@ -2,7 +2,7 @@
 {
     interface IGameType
     {
-        void Start();
-        void Stop();
+        void StartGame();
+        void StopGame();
     }
 }

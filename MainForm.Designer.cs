@@ -56,6 +56,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Pong: The Era Of Domination";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.MainForm_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.gameBox)).EndInit();
             this.ResumeLayout(false);
 

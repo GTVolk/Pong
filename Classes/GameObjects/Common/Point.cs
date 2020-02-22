@@ -18,7 +18,10 @@ namespace Pong.Classes
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public Point(double x, double y)
+        public Point(
+            double x = 0,
+            double y = 0
+        )
         {
             this.X = x;
             this.Y = y;

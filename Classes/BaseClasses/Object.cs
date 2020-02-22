@@ -28,11 +28,15 @@ namespace Pong.Classes
         /// <param name="width">Object width</param>
         /// <param name="height">Object height</param>
         /// <param name="position">Object position</param>
-        protected Object(double width, double height, IPoint position)
+        protected Object(
+            double width = 0,
+            double height = 0,
+            IPoint position = null
+        )
         {
             this.Width = width;
             this.Height = height;
-            this.Position = position;
+            this.Position = position ?? new Point();
         }
     }
 }

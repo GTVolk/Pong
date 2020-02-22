@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Drawing.Drawing2D;
 using Pong.Interfaces;
 
 namespace Pong.Classes
@@ -15,13 +15,24 @@ namespace Pong.Classes
         /// <param name="width"></param>
         /// <param name="height"></param>
         /// <param name="position"></param>
-        public Background(double width, double height, IPoint position) : base(width, height, position) { }
+        public Background(
+            double width = 0,
+            double height = 0,
+            IPoint position = null
+        ) : base(
+            width,
+            height,
+            position,
+            Color.Black
+        ) {}
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="graphics"></param>
-        private void FillBackground(Graphics graphics)
+        private void FillBackground(
+            Graphics graphics
+        )
         {
             using (Brush drawBrush = new SolidBrush(this.BackgroundColor))
             {
@@ -35,7 +46,10 @@ namespace Pong.Classes
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="pen"></param>
-        private void DrawBorders(Graphics graphics, Pen pen)
+        private void DrawBorders(
+            Graphics graphics,
+            Pen pen
+        )
         {
             Utils utils = Utils.GetInstance();
             utils.DrawLine(graphics, pen, this.Position.X, Constants.DEFAULT_BORDER_PADDING, this.Width, Constants.DEFAULT_BORDER_PADDING);
@@ -47,7 +61,10 @@ namespace Pong.Classes
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="pen"></param>
-        private void DrawSplitter(Graphics graphics, Pen pen)
+        private void DrawSplitter(
+            Graphics graphics,
+            Pen pen
+        )
         {
             Utils utils = Utils.GetInstance();
             utils.DrawLine(graphics, pen, this.Width / 2, Constants.DEFAULT_BORDER_PADDING, this.Width / 2, this.Height - (Constants.DEFAULT_BORDER_PADDING + Constants.DEFAULT_BORDER_WIDTH));
@@ -57,16 +74,29 @@ namespace Pong.Classes
         /// 
         /// </summary>
         /// <param name="graphics"></param>
-        public override void Draw(Graphics graphics)
+        private void DrawDecorations(
+            Graphics graphics
+        )
         {
-            this.FillBackground(graphics);
             using (Pen drawPen = new Pen(Color.White, (int)Constants.DEFAULT_BORDER_WIDTH))
             {
                 this.DrawBorders(graphics, drawPen);
 
-                drawPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dot;
+                drawPen.DashStyle = DashStyle.Dot;
                 this.DrawSplitter(graphics, drawPen);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        public override void Draw(
+            Graphics graphics
+        )
+        {
+            this.FillBackground(graphics);
+            this.DrawDecorations(graphics);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace Pong.Classes
     /// <summary>
     /// 
     /// </summary>
-    class ScreenText: StaticObject, IScreenText
+    class StaticText: StaticObject, IScreenText
     {
         /// <summary>
         /// 
@@ -24,11 +24,19 @@ namespace Pong.Classes
         /// <param name="position"></param>
         /// <param name="font"></param>
         /// <param name="text"></param>
-        public ScreenText(IPoint position, Font font, string text) : base(0, 0, position)
+        public StaticText(
+            IPoint position = null,
+            Font font = default,
+            string text = ""
+        ) : base(
+            0,
+            0,
+            position,
+            Color.White
+        )
         {
             this.Font = font;
             this.Text = text;
-            this.BackgroundColor = Color.White;
         }
 
         /// <summary>
@@ -36,7 +44,9 @@ namespace Pong.Classes
         /// </summary>
         /// <param name="graphics"></param>
         /// <returns></returns>
-        public SizeF GetTextSize(Graphics graphics)
+        public SizeF GetTextSize(
+            Graphics graphics
+        )
         {
             return graphics.MeasureString(this.Text, this.Font);
         }
@@ -45,12 +55,26 @@ namespace Pong.Classes
         /// 
         /// </summary>
         /// <param name="graphics"></param>
-        public override void Draw(Graphics graphics)
+        private void DrawStaticText(
+            Graphics graphics
+        )
         {
-            using (Brush drawBrush = new SolidBrush(this.BackgroundColor)) {
+            using (Brush drawBrush = new SolidBrush(this.BackgroundColor))
+            {
                 Utils utils = Utils.GetInstance();
                 utils.DrawString(graphics, this.Text, this.Font, drawBrush, this.Position.X, this.Position.Y);
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="graphics"></param>
+        public override void Draw(
+            Graphics graphics
+        )
+        {
+            this.DrawStaticText(graphics);
         }
     }
 }

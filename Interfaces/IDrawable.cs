@@ -2,7 +2,7 @@
 
 namespace Pong.Interfaces
 {
-    interface IDrawable: IObject
+    public interface IDrawable: IObject
     {
         Color BackgroundColor { get; set; }
 

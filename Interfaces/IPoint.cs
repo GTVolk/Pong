@@ -1,6 +1,6 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IPoint
+    public interface IPoint
     {
         double X { get; set; }
         double Y { get; set; }

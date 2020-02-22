@@ -1,6 +1,6 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IObject
+    public interface IObject
     {
         double Width { get; set; }
         double Height { get; set; }

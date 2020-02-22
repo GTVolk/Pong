@@ -43,33 +43,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Constants.cs" />
-    <Compile Include="Classes\Utils.cs" />
-    <Compile Include="Classes\GameObjects\Ball.cs" />
-    <Compile Include="Classes\BaseClasses\ActiveObject.cs" />
+    <Compile Include="Classes\System\Canvas.cs" />
+    <Compile Include="Classes\System\PlayerAI.cs" />
+    <Compile Include="Classes\System\PlayerHuman.cs" />
+    <Compile Include="Classes\System\PongGame.cs" />
+    <Compile Include="Classes\System\UserInput.cs" />
+    <Compile Include="Classes\System\GameLogic.cs" />
+    <Compile Include="Classes\System\Renderer.cs" />
+    <Compile Include="Classes\System\Constants.cs" />
+    <Compile Include="Classes\System\Utils.cs" />
+    <Compile Include="Classes\GameObjects\MovingObjects\Ball.cs" />
+    <Compile Include="Classes\BaseClasses\MovingObject.cs" />
     <Compile Include="Classes\BaseClasses\GameType.cs" />
-    <Compile Include="Classes\GameObjects\Background.cs" />
-    <Compile Include="Classes\GameObjects\GameZone.cs" />
+    <Compile Include="Classes\GameObjects\StaticObjects\Background.cs" />
+    <Compile Include="Classes\GameObjects\Common\GameZone.cs" />
     <Compile Include="Classes\GameTypes\DemoGame.cs" />
-    <Compile Include="Classes\GameObjects\ScreenText.cs" />
+    <Compile Include="Classes\GameObjects\StaticObjects\StaticText.cs" />
     <Compile Include="Classes\BaseClasses\Object.cs" />
     <Compile Include="Classes\BaseClasses\StaticObject.cs" />
-    <Compile Include="Classes\GameObjects\Paddle.cs" />
-    <Compile Include="Classes\GameObjects\Point.cs" />
+    <Compile Include="Classes\GameObjects\MovingObjects\Paddle.cs" />
+    <Compile Include="Classes\GameObjects\Common\Point.cs" />
     <Compile Include="Classes\BaseClasses\Player.cs" />
     <Compile Include="Interfaces\IBackground.cs" />
     <Compile Include="Interfaces\IBall.cs" />
+    <Compile Include="Interfaces\ICanvas.cs" />
+    <Compile Include="Interfaces\IPongGame.cs" />
     <Compile Include="Interfaces\IGameType.cs" />
     <Compile Include="Interfaces\IGameZone.cs" />
+    <Compile Include="Interfaces\IUserInput.cs" />
+    <Compile Include="Interfaces\IGameLogic.cs" />
     <Compile Include="Interfaces\IObject.cs" />
     <Compile Include="Interfaces\IPlayer.cs" />
     <Compile Include="Interfaces\IPlayerAI.cs" />
     <Compile Include="Interfaces\IPlayerHuman.cs" />
+    <Compile Include="Interfaces\IRenderer.cs" />
     <Compile Include="Interfaces\IScreenText.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\IMoveable.cs" />
     <Compile Include="Interfaces\IStaticObject.cs" />
-    <Compile Include="Interfaces\IActiveObject.cs" />
+    <Compile Include="Interfaces\IMovingObject.cs" />
     <Compile Include="Interfaces\IPaddle.cs" />
     <Compile Include="Interfaces\IPoint.cs" />
     <Compile Include="MainForm.cs">
@@ -102,5 +114,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

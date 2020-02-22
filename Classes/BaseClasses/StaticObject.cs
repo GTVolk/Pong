@@ -16,15 +16,26 @@ namespace Pong.Classes
         /// <param name="width">Object widht</param>
         /// <param name="height">Object height</param>
         /// <param name="position">Object position</param>
-        protected StaticObject(double width, double height, IPoint position): base(width, height, position)
+        protected StaticObject(
+            double width = 0,
+            double height = 0,
+            IPoint position = null,
+            Color backgroundColor = default
+        ): base(
+            width,
+            height,
+            position
+        )
         {
-            this.BackgroundColor = Color.Black;
+            this.BackgroundColor = backgroundColor;
         }
 
         /// <summary>
         /// Abstract draw method for self-drawing of object
         /// </summary>
         /// <param name="graphics">Graphics object</param>
-        abstract public void Draw(Graphics graphics);
+        abstract public void Draw(
+            Graphics graphics
+        );
     }
 }

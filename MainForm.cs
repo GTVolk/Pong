@@ -7,25 +7,32 @@ namespace Pong
 {
     public partial class MainForm : Form
     {
-        GameType game;
+        ICanvas canvas;
+        IPongGame game;
 
         public MainForm()
         {
             InitializeComponent();
 
-            game = new DemoGame(gameBox);
+            canvas = new Canvas(gameBox);
+            game = new PongGame(canvas);
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            System.Threading.Thread.Sleep(1000);
-            this.game.Start();
+            this.game.StartGame();
         }
 
         ~MainForm()
         {
-            game.Stop();
+            game.StopGame();
             game = null;
+            canvas = null;
+        }
+
+        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
 }

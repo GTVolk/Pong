@@ -1,6 +1,4 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IBackground : IStaticObject
-    {
-    }
+    interface IBackground : IStaticObject {}
 }
