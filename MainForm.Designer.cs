@@ -15,6 +15,7 @@
         {
             if (disposing && (components != null))
             {
+                game.StopGame();
                 components.Dispose();
             }
             base.Dispose(disposing);

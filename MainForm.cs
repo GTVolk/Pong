@@ -12,11 +12,11 @@ namespace Pong
         /// <summary>
         /// Canvas object
         /// </summary>
-        ICanvas canvas;
+        readonly ICanvas canvas;
         /// <summary>
         /// Game object
         /// </summary>
-        IPongGame game;
+        readonly IPongGame game;
 
         #endregion
 
@@ -45,20 +45,6 @@ namespace Pong
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.game.StartGame();
-        }
-
-        #endregion
-
-        #region Destructor
-
-        /// <summary>
-        /// Form destructor
-        /// </summary>
-        ~MainForm()
-        {
-            game.StopGame();
-            game = null;
-            canvas = null;
         }
 
         #endregion
