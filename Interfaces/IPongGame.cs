@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Pong.Interfaces
+﻿namespace Pong.Interfaces
 {
-    interface IPongGame
+    public interface IPongGame
     {
         void StartGame();
         void StopGame();

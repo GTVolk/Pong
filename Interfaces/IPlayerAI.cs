@@ -1,9 +1,8 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IPlayerAI: IPlayer
+    public interface IPlayerAI: IPlayer
     {
-        void AddBallToWatch(IBall ball);
-
+        IBall Ball { get; set; }
         void DecideMove();
     }
 }

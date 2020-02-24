@@ -1,19 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Pong.Interfaces
+﻿namespace Pong.Interfaces
 {
-    public delegate void RenderEvent(object sender, ICanvas canvas);
-
-    interface IRenderer
+    public interface IRenderer
     {
-        event RenderEvent OnRender;
         ICanvas Canvas { get; set; }
-        List<IDrawable> ObjectsToDraw { get; set; }
-
-        void Start();
-        void Stop();
+        void SetRenderImplementation(IRenderBridge implementation);
+        void StartRendering();
+        void StopRendering();
     }
 }

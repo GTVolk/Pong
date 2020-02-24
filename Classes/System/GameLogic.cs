@@ -5,10 +5,30 @@ namespace Pong.Classes
 {
     class GameLogic: IGameLogic
     {
-        public IUserInput UserInput { get; set; }
-        public IRenderer Renderer { get; set; }
-        private List<IPlayer> PlayersList { get; set; }
+        #region Fields
 
+        /// <summary>
+        /// User input object holder
+        /// </summary>
+        public IUserInput UserInput { get; set; }
+        /// <summary>
+        /// Renderer object holder
+        /// </summary>
+        public IRenderer Renderer { get; set; }
+        /// <summary>
+        /// Game players list
+        /// </summary>
+        private List<IPlayer> Players { get; set; }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Game logic class constructor
+        /// </summary>
+        /// <param name="userInput">User input object</param>
+        /// <param name="renderer">Renderer object</param>
         public GameLogic(
             IUserInput userInput,
             IRenderer renderer
@@ -17,103 +37,139 @@ namespace Pong.Classes
             this.UserInput = userInput;
             this.Renderer = renderer;
 
-            this.PlayersList = new List<IPlayer>();
+            this.Players = new List<IPlayer>();
         }
 
-        private bool IsObjectCollideWithObject(
-            IObject firstObj,
-            IObject secondObj
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Check is ball now must bounce border
+        /// </summary>
+        /// <param name="zone">Game zone object</param>
+        /// <param name="ball">Ball object</param>
+        /// <returns></returns>
+        public bool IsBallBounceBorder(
+            IGameZone zone,
+            IBall ball
         )
         {
-            return (
-                (firstObj.Position.X > secondObj.Position.X) && (firstObj.Position.X < (secondObj.Position.X + secondObj.Width))
-                || (((firstObj.Position.X + firstObj.Width) > secondObj.Position.X) && ((firstObj.Position.X + firstObj.Width) < (secondObj.Position.X + secondObj.Width)))
-              ) && (
-                (firstObj.Position.Y > secondObj.Position.Y) && (firstObj.Position.Y < (secondObj.Position.Y + secondObj.Height))
-                || (((firstObj.Position.Y + firstObj.Height) > secondObj.Position.Y) && ((firstObj.Position.Y + firstObj.Height) < (secondObj.Position.Y + secondObj.Height)))
-              );
+            return !Utils.GetInstance().IsFirstObjectInsideSecond(ball, zone);
         }
 
         /// <summary>
-        /// 
+        /// Check is ball now must bounce paddle
         /// </summary>
+        /// <param name="zone">Paddle object</param>
+        /// <param name="ball">Ball object</param>
         /// <returns></returns>
-        public bool IsObjectsCollideWithEachOther(
-            IObject firstObj,
-            IObject secondObj
-        )
-        {
-            return (
-                this.IsObjectCollideWithObject(firstObj, secondObj)
-                || this.IsObjectCollideWithObject(secondObj, firstObj)
-            );
-        }
-
-        public bool CheckBallBounceBorder(
-            IGameZone zone,
-            IBall ball
-        )
-        {
-            return zone.IsObjectOutsideTop(ball) || zone.IsObjectOutsideBottom(ball);
-        }
-
-        public bool CheckBallOutLeft(
-            IGameZone zone,
-            IBall ball
-        )
-        {
-            return zone.IsObjectOutsideLeft(ball);
-        }
-
-        public bool CheckBallOutRight(
-            IGameZone zone,
-            IBall ball
-        )
-        {
-            return zone.IsObjectOutsideRight(ball);
-        }
-
-        public bool CheckBallBouncePaddle(
+        public bool IsBallBouncePaddle(
             IPaddle paddle,
             IBall ball
         )
         {
-            return this.IsObjectsCollideWithEachOther(paddle, ball);
+            Utils utils = Utils.GetInstance();
+            return (
+                utils.IsFirstObjectTouchesSecond(paddle, ball)
+                || utils.IsFirstObjectTouchesSecond(ball, paddle)
+            );
         }
 
+        /// <summary>
+        /// Check is ball now must out from left side
+        /// </summary>
+        /// <param name="zone">Game zone object</param>
+        /// <param name="ball">Ball object</param>
+        /// <returns></returns>
+        public bool IsBallOutOnLeft(
+            IGameZone zone,
+            IBall ball
+        )
+        {
+            return Utils.GetInstance().IsFirstObjectOutsideLeftSecond(zone, ball);
+        }
+
+        /// <summary>
+        /// Check is ball now must out from right side
+        /// </summary>
+        /// <param name="zone">Game zone object</param>
+        /// <param name="ball">Ball object</param>
+        /// <returns></returns>
+        public bool IsBallOutOnRight(
+            IGameZone zone,
+            IBall ball
+        )
+        {
+            return Utils.GetInstance().IsFirstObjectOutsideRightSecond(zone, ball);
+        }
+
+        /// <summary>
+        /// Add human player to the game with paddle
+        /// </summary>
+        /// <param name="paddle">Paddle object</param>
+        /// <returns></returns>
         public IPlayerHuman AddHumanPlayer(
             IPaddle paddle
         )
         {
             IPlayerHuman player = new PlayerHuman(paddle);
-            this.PlayersList.Add(player);
+            this.Players.Add(player);
 
             return player;
         }
 
+        /// <summary>
+        /// Add AI player to the game with paddle and watch for desired ball
+        /// </summary>
+        /// <param name="paddle">Paddle object</param>
+        /// <param name="ball">Ball object</param>
+        /// <returns>AI player object</returns>
         public IPlayerAI AddAIPlayer(
-            IPaddle paddle
+            IPaddle paddle,
+            IBall ball
         )
         {
-            IPlayerAI player = new PlayerAI(paddle);
-            this.PlayersList.Add(player);
+            IPlayerAI player = new PlayerAI(paddle, ball);
+            this.Players.Add(player);
 
             return player;
         }
 
+        /// <summary>
+        /// Add amount points to the player score
+        /// </summary>
+        /// <param name="player">Player object</param>
+        /// <param name="amount">Amount of the score to add</param>
         public void AddScore(
             IPlayer player,
             int amount
         )
         {
-            if (this.PlayersList.Contains(player)) {
+            if (this.Players.Contains(player)) {
                 player.Score += amount;
             }
         }
 
         /// <summary>
-        /// Method for processing ball move on tick
+        /// Resets player score to zero
         /// </summary>
+        /// <param name="player">Player object</param>
+        public void ResetScore(
+            IPlayer player
+        )
+        {
+            if (this.Players.Contains(player))
+            {
+                player.Score = 0;
+            }
+        }
+
+        /// <summary>
+        /// Move ball to desired vector with limits
+        /// </summary>
+        /// <param name="zone">Game zone object</param>
+        /// <param name="ball">Ball object</param>
         public void MoveBall(
             IGameZone zone,
             IBall ball
@@ -122,27 +178,29 @@ namespace Pong.Classes
             IPoint newVector = new Point(ball.Vector.X, ball.Vector.Y);
             double newBallSpeed = ball.Speed;
 
-            if (this.CheckBallBounceBorder(zone, ball))
+            if (this.IsBallBounceBorder(zone, ball))
             {
                 newVector.Y = -newVector.Y;
-                newBallSpeed *= 1.01f;
+                newBallSpeed *= Constants.BALL_BOUNCE_BORDER_SPEED_MULT;
             }
 
-            foreach (IPlayer player in this.PlayersList)
+            if (this.IsBallOutOnLeft(zone, ball))
             {
-                if (this.CheckBallBouncePaddle(player.Paddle, ball))
+                ball.Position.X = zone.Position.X;
+            }
+
+            if (this.IsBallOutOnRight(zone, ball))
+            {
+                ball.Position.X = (zone.Position.X + zone.Width);
+            }
+
+            foreach (IPlayer player in this.Players)
+            {
+                if (this.IsBallBouncePaddle(player.Paddle, ball))
                 {
                     newVector.X = -newVector.X;
-                    newBallSpeed *= 1.05f;
+                    newBallSpeed *= Constants.BALL_BOUNCE_PADDLE_SPEED_MULT;
                 }
-            }
-
-            if (
-                this.CheckBallOutLeft(zone, ball)
-                || this.CheckBallOutRight(zone, ball)
-            )
-            {
-                return;
             }
 
             ball.Vector = newVector;
@@ -150,29 +208,33 @@ namespace Pong.Classes
             ball.Move();
         }
 
+        /// <summary>
+        /// Move paddle to desired vector with limits
+        /// </summary>
+        /// <param name="zone">Game zone object</param>
+        /// <param name="paddle">Paddle object</param>
         public void MovePaddle(
             IGameZone zone,
             IPaddle paddle
         )
         {
             paddle.Vector.X = 0;
-            if (
-                (paddle.Vector.Y < 0 && !zone.IsObjectOutsideTop(paddle))
-                || (paddle.Vector.Y > 0 && !zone.IsObjectOutsideBottom(paddle))
+            bool isPaddleInsideView = Utils.GetInstance().IsFirstObjectInsideSecond(paddle, zone);
+            if (isPaddleInsideView
+                || (paddle.Position.Y <= zone.Position.Y && paddle.Vector.Y > 0)
+                || ((paddle.Position.Y + paddle.Height) >= (zone.Position.Y + zone.Height) && paddle.Vector.Y < 0)
             )
             {
                 paddle.Move();
             }
         }
 
-        public void SetRenderingFunction(RenderEvent renderEvent)
-        {
-            this.Renderer.OnRender += renderEvent;
-        }
-
+        /// <summary>
+        /// Processes AI next move
+        /// </summary>
         public void ProcessAIMovement()
         {
-            foreach(IPlayer player in PlayersList)
+            foreach(IPlayer player in Players)
             {
                 if (player is IPlayerAI)
                 {
@@ -180,5 +242,26 @@ namespace Pong.Classes
                 }
             }
         }
+
+        /// <summary>
+        /// Starts new game
+        /// </summary>
+        public void NewGame()
+        {
+            foreach(IPlayer player in this.Players)
+            {
+                this.ResetScore(player);
+            }
+        }
+
+        /// <summary>
+        /// Resets game round
+        /// </summary>
+        public void RestartGame()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        #endregion
     }
 }

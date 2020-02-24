@@ -1,4 +1,4 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IBall : IMovingObject {}
+    public interface IBall : IMovingObject {}
 }

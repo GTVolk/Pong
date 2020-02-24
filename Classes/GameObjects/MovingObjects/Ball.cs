@@ -5,12 +5,14 @@ using Pong.Interfaces;
 namespace Pong.Classes
 {
     /// <summary>
-    /// 
+    /// Class representing ball object in game
     /// </summary>
     class Ball : MovingObject, IBall
     {
+        #region Constructor
+
         /// <summary>
-        /// 
+        /// Ball class constructor
         /// </summary>
         /// <param name="position"></param>
         public Ball(
@@ -24,10 +26,14 @@ namespace Pong.Classes
             Color.White
         ) {}
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// 
+        /// Draw ball ellipse procedure
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         private void DrawBall(
             Graphics graphics
         )
@@ -40,14 +46,16 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw method for self-drawing of object
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         public override void Draw(
             Graphics graphics
         )
         {
             this.DrawBall(graphics);
         }
+
+        #endregion
     }
 }

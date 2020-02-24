@@ -1,6 +1,6 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IGameType
+    public interface IGameType
     {
         void StartGame();
         void StopGame();

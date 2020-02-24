@@ -44,9 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\System\Canvas.cs" />
-    <Compile Include="Classes\System\PlayerAI.cs" />
-    <Compile Include="Classes\System\PlayerHuman.cs" />
-    <Compile Include="Classes\System\PongGame.cs" />
+    <Compile Include="Classes\PlayerTypes\PlayerAI.cs" />
+    <Compile Include="Classes\PlayerTypes\PlayerHuman.cs" />
+    <Compile Include="Classes\PongGame.cs" />
     <Compile Include="Classes\System\UserInput.cs" />
     <Compile Include="Classes\System\GameLogic.cs" />
     <Compile Include="Classes\System\Renderer.cs" />
@@ -70,6 +70,7 @@
     <Compile Include="Interfaces\IPongGame.cs" />
     <Compile Include="Interfaces\IGameType.cs" />
     <Compile Include="Interfaces\IGameZone.cs" />
+    <Compile Include="Interfaces\IRenderBridge.cs" />
     <Compile Include="Interfaces\IUserInput.cs" />
     <Compile Include="Interfaces\IGameLogic.cs" />
     <Compile Include="Interfaces\IObject.cs" />

@@ -1,14 +1,17 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Collections.Generic;
+﻿using System.Drawing;
 using System.Threading;
 using Pong.Interfaces;
 
 namespace Pong.Classes
 {
+    /// <summary>
+    /// Class representing game renderer object
+    /// Pattern: Bridge
+    /// </summary>
     class Renderer: IRenderer
     {
+        #region Fields
+
         /// <summary>
         /// Control on what we will draw game
         /// </summary>
@@ -17,23 +20,23 @@ namespace Pong.Classes
         /// Main render thread
         /// </summary>
         private Thread RenderThread { get; set; }
-
         /// <summary>
         /// Game thread exit flag
         /// </summary>
-        private bool StopRendering { get; set; }
+        private bool IsExit { get; set; }
+        /// <summary>
+        /// Bridge pattern implementation
+        /// </summary>
+        private IRenderBridge RenderImplementation { get; set; }
 
-        public List<IDrawable> ObjectsToDraw { get; set; }
+        #endregion
+
+        #region Constructor
 
         /// <summary>
-        /// 
+        /// Renderer class constructor
         /// </summary>
-        public event RenderEvent OnRender;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="renderObj"></param>
+        /// <param name="canvas">Canvas object</param>
         public Renderer(
             ICanvas canvas
         )
@@ -41,19 +44,32 @@ namespace Pong.Classes
             this.Canvas = canvas;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Set bridge pattern implementation holder
+        /// </summary>
+        /// <param name="implementation">Render implementation object</param>
+        public void SetRenderImplementation(IRenderBridge implementation)
+        {
+            this.RenderImplementation = implementation;
+        }
+
         /// <summary>
         /// Main game thread render loop
         /// </summary>
         private void RenderProcedure()
         {
-            while (!this.StopRendering)
+            while (!this.IsExit && this.RenderImplementation != null)
             {
+                this.RenderImplementation.ProcessGameUpdate();
                 Graphics graphics = this.Canvas.GetGraphics();
 
                 if (graphics != null)
                 {
-                    this.OnRender(this, this.Canvas);
-                    foreach (IDrawable drawable in this.ObjectsToDraw)
+                    foreach (IDrawable drawable in this.RenderImplementation.GetRenderObjects(this.Canvas))
                     {
                         drawable.Draw(graphics);
                     }
@@ -62,21 +78,29 @@ namespace Pong.Classes
                 }
                 else
                 {
-                    this.StopRendering = true;
+                    this.IsExit = true;
                 }
             }
         }
 
-        public void Start()
+        /// <summary>
+        /// Starts rendering procedure
+        /// </summary>
+        public void StartRendering()
         {
             this.RenderThread = new Thread(new ThreadStart(this.RenderProcedure));
+
             this.RenderThread.Start();
         }
 
-        public void Stop()
+        /// <summary>
+        /// Stops rendering procedure
+        /// </summary>
+        public void StopRendering()
         {
-            this.StopRendering = true;
-            this.RenderThread.Abort();
+            this.IsExit = true;
         }
+
+        #endregion
     }
 }

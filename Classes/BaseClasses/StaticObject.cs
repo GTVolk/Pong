@@ -8,14 +8,22 @@ namespace Pong.Classes
     /// </summary>
     abstract class StaticObject: Object, IStaticObject
     {
+        #region Fields
+        /// <summary>
+        /// Object background color
+        /// </summary>
         public Color BackgroundColor { get; set; }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Protected class constructor for static objects
         /// </summary>
         /// <param name="width">Object widht</param>
         /// <param name="height">Object height</param>
-        /// <param name="position">Object position</param>
+        /// <param name="position">Object initial position</param>
         protected StaticObject(
             double width = 0,
             double height = 0,
@@ -30,6 +38,10 @@ namespace Pong.Classes
             this.BackgroundColor = backgroundColor;
         }
 
+        #endregion
+
+        #region Abstract methods
+
         /// <summary>
         /// Abstract draw method for self-drawing of object
         /// </summary>
@@ -37,5 +49,7 @@ namespace Pong.Classes
         abstract public void Draw(
             Graphics graphics
         );
+
+        #endregion
     }
 }

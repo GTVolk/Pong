@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using Pong.Interfaces;
 
 namespace Pong.Classes
 {
@@ -9,15 +10,25 @@ namespace Pong.Classes
     /// </summary>
     class Utils
     {
+        #region Fields
+
         /// <summary>
         /// Class instance holder
         /// </summary>
         private static Utils Instance { get; set; }
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
         /// Private class constructor for utils
         /// </summary>
         private Utils() { }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Method for getting single class instance
@@ -64,7 +75,7 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Graphics draw line wrapper
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="pen"></param>
@@ -85,7 +96,7 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Graphics fill rectangle wrapper
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="brush"></param>
@@ -106,7 +117,7 @@ namespace Pong.Classes
         }
         
         /// <summary>
-        /// 
+        /// Graphics fill ellipse wrapper
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="brush"></param>
@@ -127,7 +138,7 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Graphics draw string wrapper
         /// </summary>
         /// <param name="graphics"></param>
         /// <param name="text"></param>
@@ -146,5 +157,81 @@ namespace Pong.Classes
         {
             graphics.DrawString(text, font, brush, this.GetPixel(x), this.GetPixel(y));
         }
+
+        /// <summary>
+        /// Check is first object out bounds of second from left
+        /// </summary>
+        /// <param name="firstObj"></param>
+        /// <param name="secondObj"></param>
+        /// <returns></returns>
+        public bool IsFirstObjectOutsideLeftSecond(
+            IObject firstObj,
+            IObject secondObj
+        )
+        {
+            return firstObj.Position.X >= secondObj.Position.X
+                || firstObj.Position.X >= (secondObj.Position.X + secondObj.Width);
+        }
+
+        /// <summary>
+        /// Check is first object out bounds of second from right
+        /// </summary>
+        /// <param name="firstObj"></param>
+        /// <param name="secondObj"></param>
+        /// <returns></returns>
+        public bool IsFirstObjectOutsideRightSecond(
+            IObject firstObj,
+            IObject secondObj
+        )
+        {
+            return (firstObj.Position.X + firstObj.Width) <= secondObj.Position.X
+                || (firstObj.Position.X + firstObj.Width) <= (secondObj.Position.X + secondObj.Width);
+        }
+
+        /// <summary>
+        /// Check is first object inside second
+        /// </summary>
+        /// <param name="firstObj"></param>
+        /// <param name="secondObj"></param>
+        /// <returns></returns>
+        public bool IsFirstObjectInsideSecond(
+            IObject firstObj,
+            IObject secondObj
+        )
+        {
+            bool isInsideX = (
+                firstObj.Position.X >= secondObj.Position.X
+                && (firstObj.Position.X + firstObj.Width) <= (secondObj.Position.X + secondObj.Width)
+            );
+            bool isInsideY = (
+                firstObj.Position.Y >= secondObj.Position.Y
+                && (firstObj.Position.Y + firstObj.Height) <= (secondObj.Position.Y + secondObj.Height)
+            );
+            return isInsideX && isInsideY;
+        }
+
+        /// <summary>
+        /// Check is first object touches second
+        /// </summary>
+        /// <param name="firstObj"></param>
+        /// <param name="secondObj"></param>
+        /// <returns></returns>
+        public bool IsFirstObjectTouchesSecond(
+            IObject firstObj,
+            IObject secondObj
+        )
+        {
+            bool isInside = this.IsFirstObjectInsideSecond(firstObj, secondObj);
+            bool isTouchX = firstObj.Position.X > secondObj.Position.X
+                ? firstObj.Position.X <= (secondObj.Position.X + secondObj.Width)
+                : (firstObj.Position.X + firstObj.Width) >= secondObj.Position.X;
+            bool isTouchY = firstObj.Position.Y > secondObj.Position.Y
+                ? firstObj.Position.Y <= (secondObj.Position.Y + secondObj.Height)
+                : (firstObj.Position.Y + firstObj.Height) >= secondObj.Position.Y;
+            bool isTouched = isTouchX && isTouchY;
+            return isInside || isTouched;
+        }
+
+        #endregion
     }
 }

@@ -9,22 +9,31 @@ namespace Pong.Classes
     /// </summary>
     abstract class MovingObject : StaticObject, IMovingObject
     {
+        #region Fields
+
         /// <summary>
         /// Object moving vector
         /// </summary>
         public IPoint Vector { get; set; }
         /// <summary>
-        /// Object speed
+        /// Object movement speed
         /// </summary>
         public double Speed { get; set; }
 
+        #endregion
+
+        #region Constructor
+
+
         /// <summary>
-        /// Protected constructor
+        /// Protected class constructor for moving object
         /// </summary>
         /// <param name="width">Object width</param>
         /// <param name="height">Object height</param>
+        /// <param name="vector">Object initial vector of movement</param>
         /// <param name="speed">Object speed</param>
-        /// <param name="position">Object position</param>
+        /// <param name="position">Object initial position</param>
+        /// <param name="backgroundColor">Object background color</param>
         protected MovingObject(
             double width = 0,
             double height = 0,
@@ -43,6 +52,10 @@ namespace Pong.Classes
             this.Speed = speed;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Method for moving object to vector
         /// </summary>
@@ -56,5 +69,7 @@ namespace Pong.Classes
                 this.Position = new Point(this.Position.X + (xStep * this.Speed), this.Position.Y + (yStep * this.Speed));
             }
         }
+
+        #endregion
     }
 }

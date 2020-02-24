@@ -7,11 +7,20 @@ namespace Pong.Classes
     /// </summary>
     abstract class Player : IPlayer
     {
+        #region Fields
+
         /// <summary>
         /// Player controlled paddle
         /// </summary>
         public IPaddle Paddle { get; set; }
+        /// <summary>
+        /// Player score
+        /// </summary>
         public int Score { get; set; }
+
+        #endregion
+
+        #region Constructor
 
         /// <summary>
         /// Protected class constructor for player
@@ -23,5 +32,7 @@ namespace Pong.Classes
         {
             this.Paddle = paddle;
         }
+
+        #endregion
     }
 }

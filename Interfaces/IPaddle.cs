@@ -1,4 +1,4 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IPaddle: IMovingObject {}
+    public interface IPaddle: IMovingObject {}
 }

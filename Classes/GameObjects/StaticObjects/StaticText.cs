@@ -1,29 +1,34 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
 using Pong.Interfaces;
 
 namespace Pong.Classes
 {
     /// <summary>
-    /// 
+    /// Class representing on-screen static text object
     /// </summary>
     class StaticText: StaticObject, IScreenText
     {
+        #region Fields
+
         /// <summary>
-        /// 
+        /// Text font
         /// </summary>
         public Font Font { get; set; }
         /// <summary>
-        /// 
+        /// Text string
         /// </summary>
         public string Text { get; set; }
 
+        #endregion
+
+        #region Constructor
+
         /// <summary>
-        /// 
+        /// Static text class constructor
         /// </summary>
-        /// <param name="position"></param>
-        /// <param name="font"></param>
-        /// <param name="text"></param>
+        /// <param name="position">Object initial position</param>
+        /// <param name="font">Text font</param>
+        /// <param name="text">Text string</param>
         public StaticText(
             IPoint position = null,
             Font font = default,
@@ -39,11 +44,15 @@ namespace Pong.Classes
             this.Text = text;
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// 
+        /// Get text's size in pixels
         /// </summary>
-        /// <param name="graphics"></param>
-        /// <returns></returns>
+        /// <param name="graphics">Graphics object</param>
+        /// <returns>Text size in pixels</returns>
         public SizeF GetTextSize(
             Graphics graphics
         )
@@ -52,9 +61,9 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw text string
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         private void DrawStaticText(
             Graphics graphics
         )
@@ -67,14 +76,16 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw method for self-drawing of object
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         public override void Draw(
             Graphics graphics
         )
         {
             this.DrawStaticText(graphics);
         }
+
+        #endregion
     }
 }

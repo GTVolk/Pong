@@ -7,9 +7,18 @@ namespace Pong
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+        /// 
+        /// </summary>
         ICanvas canvas;
+        /// <summary>
+        /// 
+        /// </summary>
         IPongGame game;
 
+        /// <summary>
+        /// Main form constructor
+        /// </summary>
         public MainForm()
         {
             InitializeComponent();
@@ -18,21 +27,24 @@ namespace Pong
             game = new PongGame(canvas);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.game.StartGame();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         ~MainForm()
         {
             game.StopGame();
             game = null;
             canvas = null;
-        }
-
-        private void MainForm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
         }
     }
 }

@@ -5,16 +5,18 @@ using Pong.Interfaces;
 namespace Pong.Classes
 {
     /// <summary>
-    /// 
+    /// Class representing static background object
     /// </summary>
     class Background: StaticObject, IBackground
     {
+        #region Constructor
+
         /// <summary>
-        /// 
+        /// Background class constructor
         /// </summary>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="position"></param>
+        /// <param name="width">Object width</param>
+        /// <param name="height">Object height</param>
+        /// <param name="position">Object initial position</param>
         public Background(
             double width = 0,
             double height = 0,
@@ -26,10 +28,14 @@ namespace Pong.Classes
             Color.Black
         ) {}
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
-        /// 
+        /// Fill background with color
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         private void FillBackground(
             Graphics graphics
         )
@@ -42,10 +48,10 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw top and bottom borders
         /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="pen"></param>
+        /// <param name="graphics">Graphics object</param>
+        /// <param name="pen">Pen object</param>
         private void DrawBorders(
             Graphics graphics,
             Pen pen
@@ -57,10 +63,10 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw midfield splitter line
         /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="pen"></param>
+        /// <param name="graphics">Graphics object</param>
+        /// <param name="pen">Pen object</param>
         private void DrawSplitter(
             Graphics graphics,
             Pen pen
@@ -71,9 +77,9 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw background decorations (top and down borders, midfield splitter line)
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         private void DrawDecorations(
             Graphics graphics
         )
@@ -88,9 +94,9 @@ namespace Pong.Classes
         }
 
         /// <summary>
-        /// 
+        /// Draw method for self-drawing of object
         /// </summary>
-        /// <param name="graphics"></param>
+        /// <param name="graphics">Graphics object</param>
         public override void Draw(
             Graphics graphics
         )
@@ -98,5 +104,7 @@ namespace Pong.Classes
             this.FillBackground(graphics);
             this.DrawDecorations(graphics);
         }
+
+        #endregion
     }
 }

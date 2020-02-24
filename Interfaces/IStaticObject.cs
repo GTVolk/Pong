@@ -1,4 +1,4 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IStaticObject: IDrawable {}
+    public interface IStaticObject: IDrawable {}
 }

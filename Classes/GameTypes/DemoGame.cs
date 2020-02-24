@@ -1,58 +1,82 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using Pong.Interfaces;
 
 namespace Pong.Classes
 {
     /// <summary>
-    /// 
+    /// Class representing demo game type object
     /// </summary>
     class DemoGame: GameType
     {
+        #region Fields
+
         /// <summary>
-        /// Game background object
+        /// Game background object holder
         /// </summary>
         protected IBackground Background { get; set; }
         /// <summary>
-        /// Game zone object
+        /// Game zone object holder
         /// </summary>
         protected IGameZone GameZone { get; set; }
         /// <summary>
-        /// Ball object
+        /// Ball object holder
         /// </summary>
         protected IBall Ball { get; set; }
         /// <summary>
-        /// Left racket pad object
+        /// Left racket pad object holder
         /// </summary>
         protected IPaddle LeftPaddle { get; set; }
         /// <summary>
-        /// Right racket pad object
+        /// Right racket pad object holder
         /// </summary>
         protected IPaddle RightPaddle { get; set; }
+        /// <summary>
+        /// Left side player object holder
+        /// </summary>
         protected IPlayerAI LeftPlayer { get; set; }
+        /// <summary>
+        /// Right side player object holder
+        /// </summary>
         protected IPlayerAI RightPlayer { get; set; }
         protected System.Drawing.Font CounterFont { get; set; }
         /// <summary>
-        /// Left score counter object
+        /// Left score counter object holder
         /// </summary>
         protected IScreenText LeftCounter { get; set; }
         /// <summary>
-        /// Right score counter object
+        /// Right score counter object holder
         /// </summary>
         protected IScreenText RightCounter { get; set; }
         /// <summary>
-        /// 
+        /// Scene prepared for rendering flag
+        /// </summary>
+        protected bool IsScenePrepared { get; set; }
+
+        #endregion
+
+        #region Constructor
+
+        /// <summary>
+        /// Demo game class constructor
         /// </summary>
         /// <param name="control"></param>
         public DemoGame(
             IGameLogic gameLogic
         ): base(
             gameLogic
-        ) {}
+        )
+        {
+            this.CreateGameObjects();
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// 
+        /// Creating game type objects
         /// </summary>
-        protected override void CreateGameObjects()
+        protected void CreateGameObjects()
         {
             this.Background = new Background();
             this.GameZone = new GameZone();
@@ -65,14 +89,17 @@ namespace Pong.Classes
             this.LeftCounter = new StaticText(null, this.CounterFont);
             this.RightCounter = new StaticText(null, this.CounterFont);
 
-            this.LeftPlayer = this.GameLogic.AddAIPlayer(this.LeftPaddle);
-            this.RightPlayer = this.GameLogic.AddAIPlayer(this.RightPaddle);
+            this.LeftPlayer = this.GameLogic.AddAIPlayer(this.LeftPaddle, this.Ball);
+            this.RightPlayer = this.GameLogic.AddAIPlayer(this.RightPaddle, this.Ball);
 
-            this.LeftPlayer.AddBallToWatch(this.Ball);
-            this.RightPlayer.AddBallToWatch(this.Ball);
+            this.IsScenePrepared = false;
         }
 
-        protected override void SetGameObjectsByCanvas(
+        /// <summary>
+        /// Preparing game objects for rendering
+        /// </summary>
+        /// <param name="canvas"></param>
+        protected void PrepareGameObjectsForRendering(
             ICanvas canvas
         )
         {
@@ -108,64 +135,90 @@ namespace Pong.Classes
 
             this.Ball.Speed = Constants.DEFAULT_BALL_SPEED;
             this.Ball.Vector = new Point();
+
+            Random randomizer = new Random();
             while (this.Ball.Vector.X == 0 || this.Ball.Vector.Y == 0)
             {
-                this.Ball.Vector.X = this.Randomizer.Next(-(int)(canvasWidth / 2), (int)(canvasWidth / 2));
-                this.Ball.Vector.Y = this.Randomizer.Next(-(int)(canvasHeight / 8), (int)(canvasHeight / 8));
-            }
-        }
-
-        protected override void ProcessGame(object sender, ICanvas canvas)
-        {
-            List<IDrawable> objectsList = new List<IDrawable>();
-
-            objectsList.Add(this.Background);
-            objectsList.Add(this.LeftPaddle);
-            objectsList.Add(this.RightPaddle);
-            objectsList.Add(this.Ball);
-            objectsList.Add(this.LeftCounter);
-            objectsList.Add(this.RightCounter);
-
-            ((IRenderer)sender).ObjectsToDraw = objectsList;
-
-            this.GameLogic.ProcessAIMovement();
-
-            this.GameLogic.MoveBall(this.GameZone, this.Ball);
-            this.GameLogic.MovePaddle(this.GameZone, this.LeftPaddle);
-            this.GameLogic.MovePaddle(this.GameZone, this.RightPaddle);
-
-            if (this.GameLogic.CheckBallOutLeft(this.GameZone, this.Ball))
-            {
-                this.GameLogic.AddScore(this.RightPlayer, 1);
-                this.SetGameObjectsByCanvas(canvas);
+                this.Ball.Vector.X = randomizer.Next(-(int)(canvasWidth / 2), (int)(canvasWidth / 2));
+                this.Ball.Vector.Y = randomizer.Next(-(int)(canvasHeight / 8), (int)(canvasHeight / 8));
             }
 
-            if (this.GameLogic.CheckBallOutRight(this.GameZone, this.Ball))
-            {
-                this.GameLogic.AddScore(this.LeftPlayer, 1);
-                this.SetGameObjectsByCanvas(canvas);
-            }
-        }
-
-        public void NewGame()
-        {
-            throw new System.NotImplementedException();
+            this.IsScenePrepared = true;
         }
 
         /// <summary>
-        /// 
+        /// Game update on tick function for bridge pattern
         /// </summary>
-        public override void RestartGame()
+        public override void ProcessGameUpdate()
         {
-            throw new System.NotImplementedException();
+            if (this.IsScenePrepared)
+            {
+                this.GameLogic.ProcessAIMovement();
+
+                this.GameLogic.MovePaddle(this.GameZone, this.LeftPaddle);
+                this.GameLogic.MovePaddle(this.GameZone, this.RightPaddle);
+
+                if (this.GameLogic.IsBallOutOnLeft(this.GameZone, this.Ball))
+                {
+                    this.GameLogic.AddScore(this.RightPlayer, 1);
+                    this.IsScenePrepared = false;
+                }
+
+                if (this.GameLogic.IsBallOutOnRight(this.GameZone, this.Ball))
+                {
+                    this.GameLogic.AddScore(this.LeftPlayer, 1);
+                    this.IsScenePrepared = false;
+                }
+
+                this.GameLogic.MoveBall(this.GameZone, this.Ball);
+            }
+        }
+
+        /// <summary>
+        /// Render function for bridge pattern
+        /// </summary>
+        /// <param name="canvas">Canvas on which we will render game</param>
+        /// <returns>Objects to render</returns>
+        public override IDrawable[] GetRenderObjects(ICanvas canvas)
+        {
+            if (!this.IsScenePrepared)
+            {
+                this.PrepareGameObjectsForRendering(canvas);
+            }
+
+            IDrawable[] drawables =
+            {
+                this.Background,
+                this.LeftPaddle,
+                this.RightPaddle,
+                this.Ball,
+                this.LeftCounter,
+                this.RightCounter,
+            };
+
+            return drawables;
         }
 
         /// <summary>
         /// Method for disposing disposable game objects
         /// </summary>
-        protected override void DisposeGameObjects()
+        protected void DisposeGameObjects()
         {
             this.CounterFont.Dispose();
         }
+
+        #endregion
+
+        #region Destructor
+
+        /// <summary>
+        /// Class destructor
+        /// </summary>
+        ~DemoGame()
+        {
+            this.DisposeGameObjects();
+        }
+
+        #endregion
     }
 }

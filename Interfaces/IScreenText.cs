@@ -2,7 +2,7 @@
 
 namespace Pong.Interfaces
 {
-    interface IScreenText: IStaticObject {
+    public interface IScreenText: IStaticObject {
         string Text { get; set; }
         SizeF GetTextSize(Graphics graphics);
     }

@@ -1,6 +1,6 @@
 ﻿namespace Pong.Interfaces
 {
-    interface IMoveable: IObject
+    public interface IMoveable: IObject
     {
         IPoint Vector { get; set; }
         double Speed { get; set; }
